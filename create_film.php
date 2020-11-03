@@ -12,40 +12,72 @@ $film = new Film($db);
 $glumac = new Glumac($db);
 
 // ime stranice
-$page_title = "Unosenje filma";
+$naslovna = "Unosenje novog filma";
 
 // includujemo header
 include_once "header_layout.php";
   
 echo "<div class='right-button-margin'>
-        <a href='index.php' class='btn btn-default pull-right'>Procitaj filmove</a>
+        <a href='index.php' class='btn btn-default pull-right'>Pogledaj sve filmove</a>
     </div>";
   
 ?>
 <?php 
 
-if($_POST){
-  
-    // postavljaju se properies filma
-    $film->naziv = $_POST['naziv'];
-    $film->opis = $_POST['opis'];
-    $film->datum = $_POST['datum'];
-    $film->glumac_id = $_POST['glumac_id'];
-  
-    // unesi film
-    if($film->create()){
-        echo "<div class='alert alert-success'>Product was created.</div>";
+// ukoliko je kliknuto na dugme 'Unesi'
+if (isset($_POST["submit"])){
+    //Prikupljanje podataka sa forme
+    
+    if(isset($_POST['naziv'])&&isset($_POST['opis'])
+        &&isset($_POST['datum']) && isset($_POST['glumac_id'])){
+            $film->naziv = $_POST['naziv'];
+            $film->opis = $_POST['opis'];
+            $film->datum = $_POST['datum'];
+            $film->glumac_id = $_POST['glumac_id'];
+    
+    //Operacije nad bazom
+    include "Database.php";
+    $sql="INSERT INTO filmovi (naziv, opis, datum, glumac_id) VALUES ('".$naziv."', '".$opis."', '".$datum."', '".$glumac_id."')";
+    if (mysql_query($sql))
+    {
+    echo "<p>Novost je uspešno ubačena</p>";
+    } 
+    else {
+    echo "<p>Nastala je greška pri ubacivanju novosti</p>" . mysql_error();
     }
+    } else {
+    //Ako POST parametri nisu prosleđeni
+    echo "Nisu prosleđeni parametri!";
+    }
+    mysql_close($db);
+    }
+    
+/*if(isset($_POST['submit'])){
+    
+    if(isset($_POST['naziv'])&&isset($_POST['opis'])
+        &&isset($_POST['datum']) && isset($_POST['glumac_id'])){
+    // postavljaju se properies filma
+        $film->naziv = $_POST['naziv'];
+        $film->opis = $_POST['opis'];
+        $film->datum = $_POST['datum'];
+        $film->glumac_id = $_POST['glumac_id'];
+    
+        
+    // unesi film
+        if($film->create()){
+            echo "<div class='alert alert-success'>Film uspesno unet.</div>";
+        }
   
     // ukoliko nastane greska, ispisuje se na konzoli
-    else{
-        echo "<div class='alert alert-danger'>Unable to create product.</div>";
+        else{
+            echo "<div class='alert alert-danger'>Film nije uspeo da se unese.</div>";
+        }
     }
-}
+}*/
 ?>
   
 <!-- HTML form for creating a product -->
-<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
+<form action="" method="post">
   
     <table class='table table-hover table-responsive table-bordered'>
   
@@ -68,15 +100,15 @@ if($_POST){
             <td>Glumac</td>
             <td>
             <?php
-            // Cita filmove iz baze
+            // Cita glumce iz baze
             $stmt = $glumac->read();
   
             echo "<select class='form-control' name='glumac_id'>";
-                echo "<option>Izabrati glumca koji glumi u filmu</option>";
+                echo "<option>Izabrati glavnog glumca</option>";
   
-                while ($row_gluma = $stmt->fetch(PDO::FETCH_ASSOC)){
+                while ($row_glumac = $stmt->fetch(PDO::FETCH_ASSOC)){
                     extract($row_glumac);
-                    echo "<option value='{$id}'>{$name}</option>";
+                    echo "<option value='{$id}'>{$glumac}</option>";
                 }
   
             echo "</select>";

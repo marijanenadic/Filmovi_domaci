@@ -23,7 +23,7 @@ class Film{
         $query = "INSERT INTO
                     " . $this->table_name . "
                 SET
-                    naziv=:naziv, opis=:opis, glumac_id=:glumac_id, datum=:created";
+                    naziv=naziv, opis=opis, glumac_id=glumac_id, datum=datum";
   
         $stmt = $this->conn->prepare($query);
   
@@ -39,7 +39,7 @@ class Film{
         // dodaj vrednosti promenljivima
         $stmt->bindParam(":naziv", $this->naziv);
         $stmt->bindParam(":opis", $this->opis);
-        $stmt->bindParam(":datum", $this->timestamp);
+        $stmt->bindParam(":datum", $this->datum);
         $stmt->bindParam(":glumac_id", $this->glumac_id);
   
         if($stmt->execute()){

@@ -3,14 +3,15 @@
 <head>
   
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title><?php echo $page_title; ?></title>
+    <title><?php echo $naslovna; ?></title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
     <link rel="stylesheet" href="libs/css/custom.css" />
     <style>
         body {background-color: #FDF5E6;}
+        
     </style>
    
 </head>
@@ -21,6 +22,6 @@
         <?php
         // Prikazi naslovnu stranu
         echo "<div class='page-header'>
-                <h1>{$page_title}</h1>
+                <h1>{$naslovna}</h1>
             </div>";
         ?>
